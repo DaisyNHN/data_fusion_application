@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service
+//@Service
 public class WealthConsumer {
     @Autowired
     private WealthDecisionDao wealthDecisionDao;
