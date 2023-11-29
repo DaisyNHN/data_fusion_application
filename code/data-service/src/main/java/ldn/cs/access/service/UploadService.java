@@ -55,7 +55,7 @@ public class UploadService {
                     Object value = record.get(columnIndex);
                     dataMap.put(header.replaceAll("\uFEFF", ""), value);
                 }
-                System.out.println(dataMap);//输出数据
+                System.out.println(dataMap);//输出数据xs
                 dataFusion.fusion(dataMap);
             }
         }
