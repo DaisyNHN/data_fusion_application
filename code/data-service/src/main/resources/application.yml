@@ -1,3 +1,5 @@
+server:
+  port:
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -26,3 +28,5 @@ spring:
 
 mybatis:
   mapper-locations: classpath:/fusion/*.xml, classpath:/decision/*.xml, classpath:/access/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
