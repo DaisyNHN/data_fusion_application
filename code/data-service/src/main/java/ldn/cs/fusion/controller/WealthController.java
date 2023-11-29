@@ -1,5 +1,9 @@
 package ldn.cs.fusion.controller;
 
+import ldn.cs.common.BaseResponse;
+import ldn.cs.common.DataSource;
+import ldn.cs.fusion.dao.CompanyGroupDao;
+import ldn.cs.fusion.pojo.company.CompanyGroup;
 import ldn.cs.fusion.pojo.wealth.*;
 import ldn.cs.fusion.service.WealthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +21,8 @@ import java.util.Map;
 public class WealthController {
     @Autowired
     WealthService wealthService;
+    @Resource
+    private CompanyGroupDao companyGroupDao;
 
     /**
      * 数据融合 -- 财务链查询
@@ -52,5 +60,16 @@ public class WealthController {
     @GetMapping("/perception/finance/query")
     public Map<String, List<Finance>> getFinanceInfos(long time, int granularity) {
         return wealthService.getFinanceInfos(time, granularity);
+    }
+
+    @GetMapping("/graph/pay")
+    public BaseResponse<List<PayVo>> graphPay() {
+        List<PayVo> vos = new ArrayList<>();
+        List<CompanyGroup> groups = companyGroupDao.selectAll();
+        for (CompanyGroup group : groups) {
+            vos.add(new PayVo(group.getName(), null, null));
+        }
+        DataSource.graphPay(vos);
+        return BaseResponse.success(vos);
     }
 }

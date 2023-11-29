@@ -1,5 +1,9 @@
 package ldn.cs.fusion.controller;
 
+import ldn.cs.common.BaseResponse;
+import ldn.cs.common.DataSource;
+import ldn.cs.fusion.dao.CompanyGroupDao;
+import ldn.cs.fusion.pojo.company.CompanyGroup;
 import ldn.cs.fusion.pojo.sale.*;
 import ldn.cs.fusion.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +21,9 @@ import java.util.Map;
 public class SaleController {
     @Autowired
     SaleService saleService;
+
+    @Resource
+    private CompanyGroupDao companyGroupDao;
 
     /**
      * 数据融合 -- 销售链查询
@@ -87,5 +96,27 @@ public class SaleController {
     @GetMapping("/perception/profit/query")
     public Map<String, List<Profit>> getProfitInfos(long time, int granularity) {
         return saleService.getProfitInfos(time, granularity);
+    }
+
+    @GetMapping("/graph/yearSale")
+    public BaseResponse<List<YearSaleVo>> graphYearSale() {
+        List<YearSaleVo> vos = new ArrayList<>();
+        List<CompanyGroup> groups = companyGroupDao.selectAll();
+        for (CompanyGroup group : groups) {
+            vos.add(new YearSaleVo(group.getName(), null, null, null));
+        }
+        DataSource.graphYearSale(vos);
+        return BaseResponse.success(vos);
+    }
+
+    @GetMapping("/graph/export")
+    public BaseResponse<List<ExportVo>> graphExport() {
+        List<ExportVo> vos = new ArrayList<>();
+        List<CompanyGroup> groups = companyGroupDao.selectAll();
+        for (CompanyGroup group : groups) {
+            vos.add(new ExportVo(group.getName(), null, null));
+        }
+        DataSource.graphExport(vos);
+        return BaseResponse.success(vos);
     }
 }

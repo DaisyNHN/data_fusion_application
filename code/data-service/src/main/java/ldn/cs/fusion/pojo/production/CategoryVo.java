@@ -21,7 +21,7 @@ public class CategoryVo {
     @NoArgsConstructor
     public static class Data{
         private String name;
-        private Integer data;
+        private Integer value;
     }
 
 }
