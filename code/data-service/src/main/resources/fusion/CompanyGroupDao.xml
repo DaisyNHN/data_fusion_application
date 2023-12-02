@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ldn.cs.fusion.dao.CompanyGroupDao">
+
+
+    <!-- 查询companyGroup报表 -->
+    <select id="selectAll" resultType="ldn.cs.fusion.pojo.company.CompanyGroup">
+        select id,`name` from company_group
+    </select>
+
+
+</mapper>

@@ -1,5 +1,11 @@
 package ldn.cs.fusion.controller;
 
+import ldn.cs.common.BaseResponse;
+import ldn.cs.common.DataSource;
+import ldn.cs.fusion.dao.CompanyDao;
+import ldn.cs.fusion.dao.CompanyGroupDao;
+import ldn.cs.fusion.pojo.company.Company;
+import ldn.cs.fusion.pojo.company.CompanyGroup;
 import ldn.cs.fusion.pojo.production.*;
 import ldn.cs.fusion.service.ProductionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +13,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/data/element/production")
 public class ProductionController {
     @Autowired
     ProductionService productionService;
+    @Resource
+    CompanyGroupDao companyGroupDao;
+    @Resource
+    CompanyDao companyDao;
 
     /**
      * 数据融合 -- 生产链查询
@@ -64,5 +77,30 @@ public class ProductionController {
     public Map<String, List<Birth>> getBirthInfos(long time, int granularity) {
         return productionService.getBirthInfos(time, granularity);
     }
+
+    @GetMapping("/graph/production")
+    public BaseResponse<List<ProductionVo>> graphProduction() {
+        List<ProductionVo> vos = new ArrayList<>();
+        List<CompanyGroup> companyGroups = companyGroupDao.selectAll();
+        for (CompanyGroup companyGroup : companyGroups) {
+            vos.add(new ProductionVo(companyGroup.getName(),
+                    companyDao.getByGroupId(companyGroup.getId()).stream().map(Company::getName).collect(Collectors.toList()),
+                    null));
+        }
+        DataSource.graphProduction(vos);
+        return BaseResponse.success(vos);
+    }
+
+    @GetMapping("/graph/category")
+    public BaseResponse<List<CategoryVo>> graphCategory() {
+        List<CategoryVo> vos = new ArrayList<>();
+        List<CompanyGroup> companyGroups = companyGroupDao.selectAll();
+        for (CompanyGroup companyGroup : companyGroups) {
+           vos.add(new CategoryVo(companyGroup.getName(),null));
+        }
+        DataSource.graphCategory(vos);
+        return BaseResponse.success(vos);
+    }
+
 }
 

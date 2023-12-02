@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
-@Service
+//@Service
 public class FusionConsumer {
 
     @Autowired

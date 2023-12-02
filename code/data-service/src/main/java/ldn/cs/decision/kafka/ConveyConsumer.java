@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service
+//@Service
 public class ConveyConsumer {
     @Autowired
     private ConveyDecisionDao conveyDecisionDao;

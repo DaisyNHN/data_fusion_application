@@ -11,11 +11,6 @@
         <module name="data-service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="data-fusion-application" target="1.8" />
-      <module name="data-service" target="1.8" />
-      <module name="quick-started" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
